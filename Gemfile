@@ -50,6 +50,10 @@ group :development do
   gem 'binding_of_caller'
 end
 
+group :production do
+  gem 'pg', '~> 1.1'
+end
+
 group :rubocop do
   gem "rubocop", ">= 1.25.1", require: false
   gem "rubocop-packaging", require: false
