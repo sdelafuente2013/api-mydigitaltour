@@ -4,6 +4,7 @@ class MoviesController < ApplicationController
     render json: @movies
   end
 
+  #CREATE
   def create
     @movie = Movie.create(movie_params)
     render json: @movie
