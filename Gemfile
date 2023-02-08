@@ -44,7 +44,6 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'rack-cors', :require => 'rack/cors'
   gem 'rspec-rails', '~> 6.0.0'
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -52,6 +51,7 @@ end
 
 group :production do
   gem 'pg', '~> 1.1'
+  gem 'rack-cors'
 end
 
 group :rubocop do
