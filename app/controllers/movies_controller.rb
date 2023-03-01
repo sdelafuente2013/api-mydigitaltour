@@ -5,7 +5,7 @@ class MoviesController < ApplicationController
     render json: @movies
   end
 
-  #CREA
+  # CREA
   def create
     @movie = Movie.create(movie_params)
     render json: @movie
@@ -24,8 +24,7 @@ class MoviesController < ApplicationController
   end
 
   private
-
-  def movie_params
-    params.require(:movie).permit(:name, :rating)
-  end
+    def movie_params
+      params.require(:movie).permit(:name, :rating)
+    end
 end

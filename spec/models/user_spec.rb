@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
   describe 'requires attributes obligatory' do
     it 'validates attributes is required' do
       should validate_presence_of(:name)
@@ -16,6 +15,4 @@ RSpec.describe User, type: :model do
       should_not allow_value('John123').for(:name).with_message('only allows letters')
     end
   end
-
-
 end
