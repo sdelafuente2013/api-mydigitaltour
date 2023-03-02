@@ -7,4 +7,10 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   validates :name, :lastname, :email, :role, :status, presence: true
+  validate :name_not_nil
+
+  def name_not_nil
+    errors.add(:name, "can't be nil") if name.nil?
+  end
+
 end
