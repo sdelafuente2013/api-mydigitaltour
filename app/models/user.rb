@@ -8,10 +8,11 @@ class User < ApplicationRecord
 
   validates :name, :lastname, :email, :role, :status, presence: true
   validates :role, inclusion: { in: %w[user guia admin] }
+  validates :status, inclusion: { in: [true, false] }
   validate :attributes_not_nil
 
   def attributes_not_nil
-    [:name, :role].each do |attr|
+    [:name, :role, :status].each do |attr|
       if self[attr].nil?
         errors.add(attr, "can't be nil")
       end

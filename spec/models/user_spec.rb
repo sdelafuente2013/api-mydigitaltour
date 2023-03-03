@@ -65,7 +65,7 @@ RSpec.describe User, type: :model do
           expect(user).not_to be_valid
         end
 
-        it 'adds an error message for the name nil attribute' do
+        it 'adds an error message for the role nil attribute' do
           user.valid?
           expect(user.errors.messages[:role]).to include("can't be nil")
         end
@@ -78,7 +78,7 @@ RSpec.describe User, type: :model do
           expect(user).not_to be_valid
         end
 
-        it 'adds an error message for the name blank attribute' do
+        it 'adds an error message for the role blank attribute' do
           user.valid?
           expect(user.errors.messages[:role]).to include("can't be blank")
         end
@@ -92,28 +92,45 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # context 'when attributes is present' do
-  #   it 'should be valid' do
-  #     should validate_presence_of(:name)
-  #     should validate_presence_of(:lastname)
-  #     should validate_presence_of(:email)
-  #     should validate_presence_of(:role)
-  #     should validate_presence_of(:status)
-  #   end
-  # end
-  #
-  # context 'when attributes is not present' do
-  #   it 'should be not valid' do
-  #     should validate_absence_of(:name)
-  #     should validate_absence_of(:lastname)
-  #     should validate_absence_of(:email)
-  #     should validate_absence_of(:role)
-  #     should validate_absence_of(:status)
-  #   end
-  # end
+  describe 'status' do
+    context 'when status is present' do
+      it 'should be valid' do
+        should validate_presence_of(:status)
+      end
+    end
 
-    # it 'name allow letters' do
-    #   should allow_value('John').for(:name)
-    #   should_not allow_value('John123').for(:name).with_message('only allows letters')
-    # end
+    context 'when status is not present' do
+      context 'when status is nil' do
+        let(:user) { User.new(status: nil) }
+
+        it 'should be not valid' do
+          expect(user).not_to be_valid
+        end
+
+        it 'adds an error message for the status nil attribute' do
+          user.valid?
+          expect(user.errors.messages[:status]).to include("can't be nil")
+        end
+      end
+
+      context 'when status is blank' do
+        let(:user) { User.new(status: '') }
+
+        it 'should be not valid' do
+          expect(user).not_to be_valid
+        end
+
+        it 'adds an error message for the status blank attribute' do
+          user.valid?
+          expect(user.errors.messages[:status]).to include("can't be blank")
+        end
+      end
+    end
+
+    context 'when the status be only (true or false)' do
+      it 'should be valid' do
+        should validate_inclusion_of(:status).in_array([true, false])
+      end
+    end
+  end
 end
