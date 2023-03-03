@@ -9,8 +9,19 @@ RSpec.describe User, type: :model do
       it 'should be valid' do
         should validate_presence_of(:name)
       end
-    end
+      it 'should be valid with letters valid' do
+        should allow_value('John').for(:name)
+      end
 
+      it 'adds an error message for the name attribute that does not contain only letters' do
+        should_not allow_value('John123').for(:name).with_message('only allows letters')
+      end
+      
+      it 'has a minimum length of 3 characters max 15' do
+        should ensure_length_of(:name).is_at_least(3).is_at_most(15)
+      end
+    end
+  
     context 'when name is not present' do
       context 'when name is nil' do
         let(:user) { User.new(name: nil) }
@@ -38,14 +49,53 @@ RSpec.describe User, type: :model do
         end
       end
     end
+  end 
 
-    context 'when name contains only letters' do
+
+  describe 'lastname' do 
+    context 'when lastname is present' do
       it 'should be valid' do
-        should allow_value('John').for(:name)
+        should validate_presence_of(:lastname)
       end
 
-      it 'adds an error message for the name attribute that does not contain only letters' do
-        should_not allow_value('John123').for(:name).with_message('only allows letters')
+      it 'does not allow non-letter characters' do
+        should_not allow_value('John123').for(:lastname)
+      end
+
+      it 'allows only letter characters' do
+        should allow_value('John').for(:lastname)
+      end
+
+      it 'has a minimum length of 3 characters max 15' do
+        should ensure_length_of(:lastname).is_at_least(3).is_at_most(15)
+      end
+    end
+
+    context 'when lastname is not present' do
+      context 'when lastname is nil' do
+        let(:user) { User.new(lastname: nil) }
+
+        it 'should be not valid' do
+          expect(user).not_to be_valid
+        end
+
+        it 'adds an error message for the lastname nil attribute' do
+          user.valid?
+          expect(user.errors.messages[:lastname]).to include("can't be nil")
+        end
+      end
+
+      context 'when lastname is blank' do
+        let(:user) { User.new(lastname: '') }
+
+        it 'should be not valid' do
+          expect(user).not_to be_valid
+        end
+
+        it 'adds an error message for the lastname blank attribute' do
+          user.valid?
+          expect(user.errors.messages[:lastname]).to include("can't be blank")
+        end
       end
     end
   end
@@ -92,6 +142,57 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'email' do
+    context 'when email is present' do
+      it 'should be valid' do
+        should validate_presence_of(:email)
+      end
+    end
+  
+    context 'when email is not present' do
+      context 'when email is nil' do
+        let(:user) { User.new(email: nil) }
+  
+        it 'should be not valid' do
+          expect(user).not_to be_valid
+        end
+  
+        it 'adds an error message for the email nil attribute' do
+          user.valid?
+          expect(user.errors.messages[:email]).to include("can't be nil")
+        end
+      end
+    end
+  
+    context 'when email is not unique' do
+      it 'should be not valid' do
+        should validate_uniqueness_of(:email)
+      end
+    end
+    
+
+    context 'when email format is invalid' do
+      let(:user) { build(:user, email: 'invalid_email') }
+  
+      it 'should be not valid' do
+        expect(user).not_to be_valid
+      end
+  
+      it 'adds an error message for the email invalid attribute' do
+        user.valid?
+        expect(user.errors.messages[:email]).to include("is invalid")
+      end
+    end
+    
+    context 'when email format is valid' do
+      let(:user) { build(:user, email: 'user@example.com') }
+  
+      it 'should be valid' do
+        expect(user).to be_valid
+      end
+    end
+  end
+  
   describe 'status' do
     context 'when status is present' do
       it 'should be valid' do

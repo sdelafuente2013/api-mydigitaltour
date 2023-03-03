@@ -10,9 +10,18 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: %w[user guia admin] }
   validates :status, inclusion: { in: [true, false] }
   validate :attributes_not_nil
+  validates :name, :lastname, format: { with: /\A[a-zA-Z]+\z/, message: "only allows letters" }
+  validates :name, :lastname, length: { minimum: 3, maximum: 5 }
+  # validates :email, uniqueness: true  
+  validates :email, uniqueness: true
+  # validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "Invalid email" }
+
+  # { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }, message:{ "is invalid" }
+  # validates :email, uniqueness: true, format: { with: /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/, message: "is invalid" }
+  # validates :name, :lastname, length: { minimum: 3, maximum: 15, message: "min 3 and max 15 characters" }
 
   def attributes_not_nil
-    [:name, :role, :status].each do |attr|
+    [:name, :role, :status, :email, :lastname].each do |attr|
       if self[attr].nil?
         errors.add(attr, "can't be nil")
       end
