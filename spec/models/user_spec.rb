@@ -150,7 +150,7 @@ RSpec.describe User, type: :model do
 
       it 'should adds an error message for the email invalid attribute' do
         user_invalid_mail.valid?
-        expect(user_invalid_mail.errors.messages[:email]).to include("is invalid")
+        expect(user_invalid_mail.errors.messages[:email]).to include('is invalid')
       end
     end
 
@@ -183,39 +183,32 @@ RSpec.describe User, type: :model do
       it 'should be valid' do
         should validate_presence_of(:status)
       end
+
+      it 'should contain only 2 possible status (true or false)' do
+        should validate_inclusion_of(:status).in_array([true, false])
+      end
     end
 
     context 'when status is not present' do
-      context 'when status is nil' do
-        let(:user) { User.new(status: nil) }
+      let(:user_nil) { User.new(status: nil) }
+      let(:user_blank) { User.new(status: '') }
 
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the status nil attribute' do
-          user.valid?
-          expect(user.errors.messages[:status]).to include("can't be nil")
-        end
+      it 'should not be valid if it is nil' do
+        expect(user_nil).not_to be_valid
       end
 
-      context 'when status is blank' do
-        let(:user) { User.new(status: '') }
-
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the status blank attribute' do
-          user.valid?
-          expect(user.errors.messages[:status]).to include("can't be blank")
-        end
+      it 'should adds an error message for the status nil attribute' do
+        user_nil.valid?
+        expect(user_nil.errors.messages[:status]).to include("can't be nil")
       end
-    end
 
-    context 'when the status be only (true or false)' do
-      it 'should be valid' do
-        should validate_inclusion_of(:status).in_array([true, false])
+      it 'should not be valid if it is blank' do
+        expect(user_blank).not_to be_valid
+      end
+
+      it 'should adds an error message for the status blank attribute' do
+        user_blank.valid?
+        expect(user_blank.errors.messages[:status]).to include("can't be blank")
       end
     end
   end
