@@ -6,50 +6,47 @@ RSpec.describe User, type: :model do
 
   describe 'name' do
     context 'when name is present' do
+
       it 'should be valid' do
         should validate_presence_of(:name)
       end
-      it 'should be valid with letters valid' do
+
+      it 'should be valid with only letters' do
         should allow_value('John').for(:name)
       end
 
-      it 'adds an error message for the name attribute that does not contain only letters' do
+      it 'should adds an error message for the name attribute that does not contain only letters' do
         should_not allow_value('John123').for(:name).with_message('only allows letters')
       end
-      
-      it 'has a minimum length of 3 characters max 15' do
+
+      it 'should has a minimum length of 3 characters max 15' do
         should ensure_length_of(:name).is_at_least(3).is_at_most(15)
       end
     end
-  
+
     context 'when name is not present' do
-      context 'when name is nil' do
-        let(:user) { User.new(name: nil) }
+      let(:user_nil) { User.new(name: nil) }
+      let(:user_blank) { User.new(name: '') }
 
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the name nil attribute' do
-          user.valid?
-          expect(user.errors.messages[:name]).to include("can't be nil")
-        end
+      it 'should be not valid if it is null' do
+        expect(user_nil).not_to be_valid
       end
 
-      context 'when name is blank' do
-        let(:user) { User.new(name: '') }
+      it 'should adds an error message for the name nil attribute' do
+        user_nil.valid?
+        expect(user_nil.errors.messages[:name]).to include("can't be nil")
+      end
 
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
+      it 'should be not valid if it is blank' do
+        expect(user_blank).not_to be_valid
+      end
 
-        it 'adds an error message for the name blank attribute' do
-          user.valid?
-          expect(user.errors.messages[:name]).to include("can't be blank")
-        end
+      it 'should adds an error message for the name blank attribute' do
+        user_blank.valid?
+        expect(user_blank.errors.messages[:name]).to include("can't be blank")
       end
     end
-  end 
+  end
 
 
   describe 'lastname' do 
