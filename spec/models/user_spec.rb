@@ -47,44 +47,43 @@ RSpec.describe User, type: :model do
     end
   end
 
-
   describe 'lastname' do
     context 'when lastname is present' do
+      subject(:user) { build(:user) }
+
       it 'should be valid' do
-        should validate_presence_of(:lastname)
+        expect(user).to validate_presence_of(:lastname)
       end
 
       it 'should does not allow non-letter characters' do
-        should_not allow_value('John123').for(:lastname)
+        expect(user).to_not allow_value('John123').for(:lastname)
       end
 
       it 'should allows only letter characters' do
-        should allow_value('John').for(:lastname)
+        expect(user).to allow_value('John').for(:lastname)
       end
 
       it 'should has a minimum length of 3 characters max 15' do
-        should ensure_length_of(:lastname).is_at_least(3).is_at_most(15)
+        expect(user).to validate_length_of(:lastname).is_at_least(3).is_at_most(15)
+        expect(user.errors[:name]).to include('must be between 3 and 15 characters')
       end
     end
 
-    context 'when lastname is not present' do
-      let(:user_nil) { User.new(lastname: nil) }
-      let(:user_blank) { User.new(lastname: '') }
+    context 'when lastname is not present (blank or nil)' do
+      let(:user_nil) { build(:user, lastname: nil) }
+      let(:user_blank) { build(:user, lastname: '') }
 
-      it 'should not be valid if it is nil' do
+      it 'should not be valid' do
         expect(user_nil).not_to be_valid
+        expect(user_blank).not_to be_valid
       end
 
-      it 'should adds an error message for the lastname nil attribute' do
+      it 'should adds an error message for the lastname is nil' do
         user_nil.valid?
         expect(user_nil.errors.messages[:lastname]).to include("can't be nil")
       end
 
-      it 'should not be valid if it is blank' do
-        expect(user_blank).not_to be_valid
-      end
-
-      it 'should adds an error message for the lastname blank attribute' do
+      it 'should adds an error message for the lastname is blank' do
         user_blank.valid?
         expect(user_blank.errors.messages[:lastname]).to include("can't be blank")
       end
@@ -93,33 +92,32 @@ RSpec.describe User, type: :model do
 
   describe 'role' do
     context 'when role is present' do
+      subject(:user) { build(:user) }
+
       it 'should be valid' do
-        should validate_presence_of(:role)
+        expect(subject).to validate_presence_of(:role)
       end
 
       it 'should contain only 3 possible roles (admin, user, guide)' do
-        should validate_inclusion_of(:role).in_array(%w[user guia admin])
+        expect(subject).to validate_inclusion_of(:role).in_array(%w[user guia admin])
       end
     end
 
-    context 'when role is not present' do
-      let(:user_nil) { User.new(role: nil) }
-      let(:user_blank) { User.new(role: '') }
+    context 'when role is not present (blank or nil)' do
+      let(:user_nil) { build_stubbed(:user, role: nil) }
+      let(:user_blank) { build_stubbed(:user, role: '') }
 
-      it 'should not be valid if it is nil' do
+      it 'should not be valid' do
         expect(user_nil).not_to be_valid
+        expect(user_blank).not_to be_valid
       end
 
-      it 'should adds an error message for the role nil attribute' do
+      it 'should adds an error message for the role is nil' do
         user_nil.valid?
         expect(user_nil.errors.messages[:role]).to include("can't be nil")
       end
 
-      it 'should not be valid if it is blank' do
-        expect(user_blank).not_to be_valid
-      end
-
-      it 'should adds an error message for the role blank attribute' do
+      it 'should adds an error message for the role is blank' do
         user_blank.valid?
         expect(user_blank.errors.messages[:role]).to include("can't be blank")
       end
@@ -132,11 +130,11 @@ RSpec.describe User, type: :model do
       let(:user_valid_mail) { build(:user, email: 'user@example.com') }
 
       it 'should be valid' do
-        should validate_presence_of(:email)
+        expect(user_valid_mail).to validate_presence_of(:email)
       end
 
       it 'should be unique' do
-        should validate_uniqueness_of(:email)
+        expect(user_valid_mail).to validate_uniqueness_of(:email)
       end
 
       it 'should be valid with valid mail' do
@@ -153,24 +151,21 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context 'when email is not present' do
-      let(:user_nil) { User.new(email: nil) }
-      let(:user_blank) { User.new(email: '') }
+    context 'when email is not present (blank or nil)' do
+      let(:user_nil) { build_stubbed(:user, email: nil) }
+      let(:user_blank) { build_stubbed(:user, email: '') }
 
-      it 'should not be valid if it is nil' do
+      it 'should not is valid' do
         expect(user_nil).not_to be_valid
+        expect(user_blank).not_to be_valid
       end
 
-      it 'should adds an error message for the email nil attribute' do
+      it 'should adds an error message for the email is nil' do
         user_nil.valid?
         expect(user_nil.errors.messages[:email]).to include("can't be nil")
       end
 
-      it 'should not be valid if it is blank' do
-        expect(user_blank).not_to be_valid
-      end
-
-      it 'should adds an error message for the email blank attribute' do
+      it 'should adds an error message for the email is blank' do
         user_blank.valid?
         expect(user_blank.errors.messages[:email]).to include("can't be blank")
       end
@@ -179,33 +174,32 @@ RSpec.describe User, type: :model do
 
   describe 'status' do
     context 'when status is present' do
+      subject(:user) { build(:user) }
+
       it 'should be valid' do
-        should validate_presence_of(:status)
+        expect(user).to validate_presence_of(:status)
       end
 
       it 'should contain only 2 possible status (true or false)' do
-        should validate_inclusion_of(:status).in_array([true, false])
+        expect(user).to validate_inclusion_of(:status).in_array([true, false])
       end
     end
 
-    context 'when status is not present' do
-      let(:user_nil) { User.new(status: nil) }
-      let(:user_blank) { User.new(status: '') }
+    context 'when status is not present (blank or nil)' do
+      let(:user_nil) { build_stubbed(:user, status: nil) }
+      let(:user_blank) { build_stubbed(:user, status: '') }
 
-      it 'should not be valid if it is nil' do
+      it 'should not be valid' do
         expect(user_nil).not_to be_valid
+        expect(user_blank).not_to be_valid
       end
 
-      it 'should adds an error message for the status nil attribute' do
+      it 'should adds an error message for the status is nil' do
         user_nil.valid?
         expect(user_nil.errors.messages[:status]).to include("can't be nil")
       end
 
-      it 'should not be valid if it is blank' do
-        expect(user_blank).not_to be_valid
-      end
-
-      it 'should adds an error message for the status blank attribute' do
+      it 'should adds an error message for the status is blank' do
         user_blank.valid?
         expect(user_blank.errors.messages[:status]).to include("can't be blank")
       end
