@@ -129,51 +129,51 @@ RSpec.describe User, type: :model do
 
   describe 'email' do
     context 'when email is present' do
+      let(:user_invalid_mail) { build(:user, email: 'invalid_email') }
+      let(:user_valid_mail) { build(:user, email: 'user@example.com') }
+
       it 'should be valid' do
         should validate_presence_of(:email)
+      end
+
+      it 'should be unique' do
+        should validate_uniqueness_of(:email)
+      end
+
+      it 'should be valid with valid mail' do
+        expect(user_valid_mail).to be_valid
+      end
+
+      it 'should not be valid with invalid mail' do
+        expect(user_invalid_mail).not_to be_valid
+      end
+
+      it 'should adds an error message for the email invalid attribute' do
+        user_invalid_mail.valid?
+        expect(user_invalid_mail.errors.messages[:email]).to include("is invalid")
       end
     end
 
     context 'when email is not present' do
-      context 'when email is nil' do
-        let(:user) { User.new(email: nil) }
+      let(:user_nil) { User.new(email: nil) }
+      let(:user_blank) { User.new(email: '') }
 
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the email nil attribute' do
-          user.valid?
-          expect(user.errors.messages[:email]).to include("can't be nil")
-        end
-      end
-    end
-
-    context 'when email is not unique' do
-      it 'should be not valid' do
-        should validate_uniqueness_of(:email)
-      end
-    end
-
-
-    context 'when email format is invalid' do
-      let(:user) { build(:user, email: 'invalid_email') }
-
-      it 'should be not valid' do
-        expect(user).not_to be_valid
+      it 'should not be valid if it is nil' do
+        expect(user_nil).not_to be_valid
       end
 
-      it 'adds an error message for the email invalid attribute' do
-        user.valid?
-        expect(user.errors.messages[:email]).to include("is invalid")
+      it 'should adds an error message for the email nil attribute' do
+        user_nil.valid?
+        expect(user_nil.errors.messages[:email]).to include("can't be nil")
       end
-    end
 
-    context 'when email format is valid' do
-      let(:user) { build(:user, email: 'user@example.com') }
+      it 'should not be valid if it is blank' do
+        expect(user_blank).not_to be_valid
+      end
 
-      it 'should be valid' do
-        expect(user).to be_valid
+      it 'should adds an error message for the email blank attribute' do
+        user_blank.valid?
+        expect(user_blank.errors.messages[:email]).to include("can't be blank")
       end
     end
   end
