@@ -45,6 +45,8 @@ group :development, :test do
   gem 'debug', platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails', '~> 6.0.0'
   gem 'shoulda-matchers'
+  gem 'factory_bot_rails', '~> 6.2'
+  gem 'faker', '~> 2.23'
 end
 
 group :development do
