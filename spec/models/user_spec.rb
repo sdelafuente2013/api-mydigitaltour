@@ -28,7 +28,7 @@ RSpec.describe User, type: :model do
       let(:user_nil) { User.new(name: nil) }
       let(:user_blank) { User.new(name: '') }
 
-      it 'should be not valid if it is null' do
+      it 'should not be valid if it is nil' do
         expect(user_nil).not_to be_valid
       end
 
@@ -37,7 +37,7 @@ RSpec.describe User, type: :model do
         expect(user_nil.errors.messages[:name]).to include("can't be nil")
       end
 
-      it 'should be not valid if it is blank' do
+      it 'should not be valid if it is blank' do
         expect(user_blank).not_to be_valid
       end
 
@@ -72,7 +72,7 @@ RSpec.describe User, type: :model do
       let(:user_nil) { User.new(lastname: nil) }
       let(:user_blank) { User.new(lastname: '') }
 
-      it 'should be not valid if it is null' do
+      it 'should not be valid if it is nil' do
         expect(user_nil).not_to be_valid
       end
 
@@ -81,7 +81,7 @@ RSpec.describe User, type: :model do
         expect(user_nil.errors.messages[:lastname]).to include("can't be nil")
       end
 
-      it 'should be not valid if it is blank' do
+      it 'should not be valid if it is blank' do
         expect(user_blank).not_to be_valid
       end
 
@@ -97,39 +97,32 @@ RSpec.describe User, type: :model do
       it 'should be valid' do
         should validate_presence_of(:role)
       end
+
+      it 'should contain only 3 possible roles (admin, user, guide)' do
+        should validate_inclusion_of(:role).in_array(%w[user guia admin])
+      end
     end
 
     context 'when role is not present' do
-      context 'when role is nil' do
-        let(:user) { User.new(role: nil) }
+      let(:user_nil) { User.new(role: nil) }
+      let(:user_blank) { User.new(role: '') }
 
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the role nil attribute' do
-          user.valid?
-          expect(user.errors.messages[:role]).to include("can't be nil")
-        end
+      it 'should not be valid if it is nil' do
+        expect(user_nil).not_to be_valid
       end
 
-      context 'when role is blank' do
-        let(:user) { User.new(role: '') }
-
-        it 'should be not valid' do
-          expect(user).not_to be_valid
-        end
-
-        it 'adds an error message for the role blank attribute' do
-          user.valid?
-          expect(user.errors.messages[:role]).to include("can't be blank")
-        end
+      it 'should adds an error message for the role nil attribute' do
+        user_nil.valid?
+        expect(user_nil.errors.messages[:role]).to include("can't be nil")
       end
-    end
 
-    context 'when the role contains only (user, guide and admin)' do
-      it 'should be valid' do
-        should validate_inclusion_of(:role).in_array(%w[user guia admin])
+      it 'should not be valid if it is blank' do
+        expect(user_blank).not_to be_valid
+      end
+
+      it 'should adds an error message for the role blank attribute' do
+        user_blank.valid?
+        expect(user_blank.errors.messages[:role]).to include("can't be blank")
       end
     end
   end
