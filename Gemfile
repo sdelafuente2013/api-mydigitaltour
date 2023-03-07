@@ -49,6 +49,8 @@ group :development, :test do
   gem 'faker', '~> 2.23'
 end
 
+gem 'simplecov', require: false, group: :test
+
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"

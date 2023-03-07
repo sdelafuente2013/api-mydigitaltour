@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validate :attributes_not_nil
   validates :role, inclusion: { in: %w[user guia admin] }
 
+  has_many :tours
+
   def attributes_not_nil
     [:name, :role, :status, :email, :lastname].each do |attr|
       if self[attr].nil?
