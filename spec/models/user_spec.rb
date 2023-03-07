@@ -95,22 +95,17 @@ RSpec.describe User, type: :model do
     end
 
     context 'when role is not present (blank or nil)' do
-      let(:user_nil) { build_stubbed(:user, role: nil) }
-      let(:user_blank) { build_stubbed(:user, role: '') }
+      let(:user_with_nil_name) { build(:user, role: nil) }
+      let(:user_with_blank_name) { build(:user, role: '') }
 
-      it 'should not be valid' do
-        expect(user_nil).not_to be_valid
-        expect(user_blank).not_to be_valid
+      it 'should not be valid if is blank' do
+        expect(user_with_blank_name).not_to be_valid
+        expect(user_with_blank_name.errors.messages[:role]).to include("can't be blank")
       end
 
-      it 'should adds an error message for the role is nil' do
-        user_nil.valid?
-        expect(user_nil.errors.messages[:role]).to include("can't be nil")
-      end
-
-      it 'should adds an error message for the role is blank' do
-        user_blank.valid?
-        expect(user_blank.errors.messages[:role]).to include("can't be blank")
+      it 'should not be valid if is nil' do
+        expect(user_with_nil_name).not_to be_valid
+        expect(user_with_nil_name.errors.messages[:role]).to include("can't be nil")
       end
     end
   end

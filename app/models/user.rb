@@ -16,6 +16,10 @@ class User < ApplicationRecord
   validates :lastname, presence: true
   validates_length_of :lastname, in: 3..15
 
+  # role
+  validates :role, presence: true
+  validates :role, inclusion: { in: %w[user guia admin] }
+
   # validates :name, :lastname, :email, :role, :status, presence: true
   # validates :role, inclusion: { in: %w[user guia admin] }
   # validates :status, inclusion: { in: [true, false] }
