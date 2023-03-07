@@ -3,10 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  subject(:user) { build(:user) }
+  subject(:user_with_nil) { build(:user_with_nil) }
+  subject(:user_with_blank) { build(:user_with_blank) }
+  subject(:user_invalid_mail) { build(:user_invalid_mail) }
+
   describe 'name' do
     context 'when name is present' do
-      subject(:user) { build(:user) }
-
       it 'should be valid' do
         expect(user).to validate_presence_of(:name)
       end
@@ -28,25 +31,20 @@ RSpec.describe User, type: :model do
     end
 
     context 'when name is not present (blank or nil)' do
-      subject(:user_with_blank_name) { build(:user, name: '') }
-      subject(:user_with_nil_name) { build(:user, name: nil) }
-
       it 'should not be valid if is blank' do
-        expect(user_with_blank_name).not_to be_valid
-        expect(user_with_blank_name.errors.messages[:name]).to include("can't be blank")
+        expect(user_with_blank).not_to be_valid
+        expect(user_with_blank.errors.messages[:name]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
-        expect(user_with_nil_name).not_to be_valid
-        expect(user_with_nil_name.errors.messages[:name]).to include("can't be nil")
+        expect(user_with_nil).not_to be_valid
+        expect(user_with_nil.errors.messages[:name]).to include("can't be nil")
       end
     end
   end
 
   describe 'lastname' do
     context 'when lastname is present' do
-      subject(:user) { build(:user) }
-
       it 'should be valid' do
         expect(user).to validate_presence_of(:lastname)
       end
@@ -67,25 +65,20 @@ RSpec.describe User, type: :model do
     end
 
     context 'when lastname is not present (blank or nil)' do
-      let(:user_with_nil_name) { build(:user, lastname: nil) }
-      let(:user_with_blank_name) { build(:user, lastname: '') }
-
       it 'should not be valid if is blank' do
-        expect(user_with_blank_name).not_to be_valid
-        expect(user_with_blank_name.errors.messages[:lastname]).to include("can't be blank")
+        expect(user_with_blank).not_to be_valid
+        expect(user_with_blank.errors.messages[:lastname]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
-        expect(user_with_nil_name).not_to be_valid
-        expect(user_with_nil_name.errors.messages[:lastname]).to include("can't be nil")
+        expect(user_with_nil).not_to be_valid
+        expect(user_with_nil.errors.messages[:lastname]).to include("can't be nil")
       end
     end
   end
 
   describe 'role' do
     context 'when role is present' do
-      subject(:user) { build(:user) }
-
       it 'should be valid' do
         expect(user).to validate_presence_of(:role)
       end
@@ -96,32 +89,26 @@ RSpec.describe User, type: :model do
     end
 
     context 'when role is not present (blank or nil)' do
-      let(:user_with_nil_name) { build(:user, role: nil) }
-      let(:user_with_blank_name) { build(:user, role: '') }
-
       it 'should not be valid if is blank' do
-        expect(user_with_blank_name).not_to be_valid
-        expect(user_with_blank_name.errors.messages[:role]).to include("can't be blank")
+        expect(user_with_blank).not_to be_valid
+        expect(user_with_blank.errors.messages[:role]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
-        expect(user_with_nil_name).not_to be_valid
-        expect(user_with_nil_name.errors.messages[:role]).to include("can't be nil")
+        expect(user_with_nil).not_to be_valid
+        expect(user_with_nil.errors.messages[:role]).to include("can't be nil")
       end
     end
   end
 
   describe 'email' do
     context 'when email is present' do
-      let(:user_invalid_mail) { build(:user, email: 'invalid_email') }
-      let(:user_valid_mail) { build(:user) }
-
       it 'should be valid' do
-        expect(user_valid_mail).to validate_presence_of(:email)
+        expect(user).to validate_presence_of(:email)
       end
 
       it 'should be unique' do
-        expect(user_valid_mail).to validate_uniqueness_of(:email).case_insensitive
+        expect(user).to validate_uniqueness_of(:email).case_insensitive
       end
 
       it 'should not be valid with invalid mail' do
@@ -135,42 +122,34 @@ RSpec.describe User, type: :model do
     end
 
     context 'when email is not present (blank or nil)' do
-      let(:user_with_nil_name) { build(:user, email: nil) }
-      let(:user_with_blank_name) { build(:user, email: '') }
-
       it 'should not be valid if is blank' do
-        expect(user_with_blank_name).not_to be_valid
-        expect(user_with_blank_name.errors.messages[:email]).to include("can't be blank")
+        expect(user_with_blank).not_to be_valid
+        expect(user_with_blank.errors.messages[:email]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
-        expect(user_with_nil_name).not_to be_valid
-        expect(user_with_nil_name.errors.messages[:email]).to include("can't be nil")
+        expect(user_with_nil).not_to be_valid
+        expect(user_with_nil.errors.messages[:email]).to include("can't be nil")
       end
     end
   end
 
   describe 'status' do
     context 'when status is present' do
-      subject(:user) { build(:user) }
-
       it 'should be valid' do
         expect(user).to validate_presence_of(:status)
       end
     end
 
     context 'when status is not present (blank or nil)' do
-      let(:user_with_nil_name) { build(:user, status: nil) }
-      let(:user_with_blank_name) { build(:user, status: '') }
-
       it 'should not be valid if is blank' do
-        expect(user_with_blank_name).not_to be_valid
-        expect(user_with_blank_name.errors.messages[:status]).to include("can't be blank")
+        expect(user_with_blank).not_to be_valid
+        expect(user_with_blank.errors.messages[:status]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
-        expect(user_with_nil_name).not_to be_valid
-        expect(user_with_nil_name.errors.messages[:status]).to include("can't be nil")
+        expect(user_with_nil).not_to be_valid
+        expect(user_with_nil.errors.messages[:status]).to include("can't be nil")
       end
     end
   end
