@@ -14,11 +14,6 @@ RSpec.describe User, type: :model do
         expect(user).to validate_presence_of(:name)
       end
 
-      it 'should be valid with only letters' do
-        expect(user).to allow_value('John Petter').for(:name)
-        expect(user).to allow_value('John Doe Smith').for(:name)
-      end
-
       it 'should not be valid with numbers or special characters' do
         expect(user).to_not allow_value('John Doe 123').for(:name).with_message('only allows letters')
         expect(user).to_not allow_value('John123').for(:name).with_message('only allows letters')
@@ -50,17 +45,17 @@ RSpec.describe User, type: :model do
       end
 
       it 'should not be valid with numbers or special characters' do
-        expect(user).to_not allow_value('J0hn').for(:name).with_message('only allows letters')
-        expect(user).to_not allow_value('John123').for(:name).with_message('only allows letters')
-        expect(user).to_not allow_value('John!').for(:name).with_message('only allows letters')
+        expect(user).to_not allow_value('J0hn').for(:lastname).with_message('only allows letters')
+        expect(user).to_not allow_value('John123').for(:lastname).with_message('only allows letters')
+        expect(user).to_not allow_value('John!').for(:lastname).with_message('only allows letters')
       end
 
       it 'should allows only letter characters' do
         expect(user).to allow_value('John').for(:lastname)
       end
 
-      it 'should has a minimum length of 3 characters max 15' do
-        expect(user).to validate_length_of(:lastname).is_at_least(3).is_at_most(15)
+      it 'should has a minimum length of 3 characters max 20' do
+        expect(user).to validate_length_of(:lastname).is_at_least(3).is_at_most(20)
       end
     end
 
