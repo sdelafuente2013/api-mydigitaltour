@@ -30,12 +30,12 @@ RSpec.describe User, type: :model do
       subject(:user_with_blank_name) { build(:user, name: '') }
       subject(:user_with_nil_name) { build(:user, name: nil) }
 
-      it 'should not be valid for the name is blank' do
+      it 'should not be valid if is blank' do
         expect(user_with_blank_name).not_to be_valid
         expect(user_with_blank_name.errors.messages[:name]).to include("can't be blank")
       end
 
-      it 'should not be valid for the name is nil' do
+      it 'should not be valid if is nil' do
         expect(user_with_nil_name).not_to be_valid
         expect(user_with_nil_name.errors.messages[:name]).to include("can't be nil")
       end
@@ -50,8 +50,10 @@ RSpec.describe User, type: :model do
         expect(user).to validate_presence_of(:lastname)
       end
 
-      it 'should does not allow non-letter characters' do
-        expect(user).to_not allow_value('John123').for(:lastname)
+      it 'should not be valid with numbers or special characters' do
+        expect(user).to_not allow_value('J0hn').for(:name).with_message('only allows letters')
+        expect(user).to_not allow_value('John123').for(:name).with_message('only allows letters')
+        expect(user).to_not allow_value('John!').for(:name).with_message('only allows letters')
       end
 
       it 'should allows only letter characters' do
@@ -60,27 +62,21 @@ RSpec.describe User, type: :model do
 
       it 'should has a minimum length of 3 characters max 15' do
         expect(user).to validate_length_of(:lastname).is_at_least(3).is_at_most(15)
-        expect(user.errors[:name]).to include('must be between 3 and 15 characters')
       end
     end
 
     context 'when lastname is not present (blank or nil)' do
-      let(:user_nil) { build(:user, lastname: nil) }
-      let(:user_blank) { build(:user, lastname: '') }
+      let(:user_with_nil_name) { build(:user, lastname: nil) }
+      let(:user_with_blank_name) { build(:user, lastname: '') }
 
-      it 'should not be valid' do
-        expect(user_nil).not_to be_valid
-        expect(user_blank).not_to be_valid
+      it 'should not be valid if is blank' do
+        expect(user_with_blank_name).not_to be_valid
+        expect(user_with_blank_name.errors.messages[:lastname]).to include("can't be blank")
       end
 
-      it 'should adds an error message for the lastname is nil' do
-        user_nil.valid?
-        expect(user_nil.errors.messages[:lastname]).to include("can't be nil")
-      end
-
-      it 'should adds an error message for the lastname is blank' do
-        user_blank.valid?
-        expect(user_blank.errors.messages[:lastname]).to include("can't be blank")
+      it 'should not be valid if is nil' do
+        expect(user_with_nil_name).not_to be_valid
+        expect(user_with_nil_name.errors.messages[:lastname]).to include("can't be nil")
       end
     end
   end

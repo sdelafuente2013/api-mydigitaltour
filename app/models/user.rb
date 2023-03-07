@@ -12,6 +12,10 @@ class User < ApplicationRecord
   validates_length_of :name, in: 3..15
   validate :attributes_not_nil
 
+  # lastname
+  validates :lastname, presence: true
+  validates_length_of :lastname, in: 3..15
+
   # validates :name, :lastname, :email, :role, :status, presence: true
   # validates :role, inclusion: { in: %w[user guia admin] }
   # validates :status, inclusion: { in: [true, false] }
