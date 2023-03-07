@@ -6,14 +6,20 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  validates :name, :lastname, :email, :role, :status, presence: true
-  validates :role, inclusion: { in: %w[user guia admin] }
-  validates :status, inclusion: { in: [true, false] }
+  # name
+  validates :name, presence: true
+  validates :name, :lastname, format: { with: /\A[a-zA-Z]+\z/, message: 'only allows letters' }
+  validates_length_of :name, in: 3..15
   validate :attributes_not_nil
-  validates :name, :lastname, format: { with: /\A[a-zA-Z]+\z/, message: "only allows letters" }
-  validates :name, :lastname, length: { minimum: 3, maximum: 5 }
-  # validates :email, uniqueness: true  
-  validates :email, uniqueness: true
+
+  # validates :name, :lastname, :email, :role, :status, presence: true
+  # validates :role, inclusion: { in: %w[user guia admin] }
+  # validates :status, inclusion: { in: [true, false] }
+  # validate :attributes_not_nil
+  # validates :name, :lastname, format: { with: /\A[a-zA-Z]+\z/, message: 'only allows letters' }
+  # validates :name, :lastname, length: { minimum: 3, maximum: 15, message: 'must be between 3 and 15 characters' }
+  # validates :email, uniqueness: true
+  # validates_length_of :name, in: 3..15
   # validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: "Invalid email" }
 
   # { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }, message:{ "is invalid" }

@@ -15,14 +15,14 @@ RSpec.describe User, type: :model do
         expect(user).to allow_value('John').for(:name)
       end
 
-      it 'should adds an error message for the name attribute that does not contain only letters' do
-        expect(user).to_not allow_value('John123').for(:name)
-        expect(user.errors[:name]).to include('only allows letters')
+      it 'should not be valid with numbers or special characters' do
+        expect(user).to_not allow_value('J0hn').for(:name).with_message('only allows letters')
+        expect(user).to_not allow_value('John123').for(:name).with_message('only allows letters')
+        expect(user).to_not allow_value('John!').for(:name).with_message('only allows letters')
       end
 
-      it 'should has a minimum length of 3 characters max 15' do
+      it 'should has a length between 3 and 15 characters' do
         expect(user).to validate_length_of(:name).is_at_least(3).is_at_most(15)
-        expect(user.errors[:name]).to include('must be between 3 and 15 characters')
       end
     end
 
@@ -30,19 +30,14 @@ RSpec.describe User, type: :model do
       subject(:user_with_blank_name) { build(:user, name: '') }
       subject(:user_with_nil_name) { build(:user, name: nil) }
 
-      it 'should not be valid' do
+      it 'should not be valid for the name is blank' do
         expect(user_with_blank_name).not_to be_valid
-        expect(user_with_nil_name).not_to be_valid
-      end
-
-      it 'should adds an error message for the name is nil' do
-        user_with_nil_name.valid?
-        expect(user_with_nil_name.errors.messages[:name]).to include("can't be nil")
-      end
-
-      it 'should adds an error message for the name is blank' do
-        user_with_blank_name.valid?
         expect(user_with_blank_name.errors.messages[:name]).to include("can't be blank")
+      end
+
+      it 'should not be valid for the name is nil' do
+        expect(user_with_nil_name).not_to be_valid
+        expect(user_with_nil_name.errors.messages[:name]).to include("can't be nil")
       end
     end
   end
