@@ -6,16 +6,15 @@ class Stage < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  validates :title, :description, :location, presence: true
-  validates :title, :description, format: { with: /\A[a-zA-Z\s]+\z/, message: 'only allows letters' }
-  validates :location, format: { with: /\A\d+\z/, message: "only allows numbers" }
-  validates_length_of :title, in: 15..100
-  validates_length_of :description, in: 100..500
+         belongs_to :tour
 
-  belongs_to :tour
+  validates :tour_id, presence: true
+  validates :title, presence: true, length: { minimum: 5, maximum: 30 }, format: { with: /\A[a-zA-Z]+\z/, message: "only allows letters" }
+  validates :description, presence: true, length: { minimum: 150, maximum: 2000 }
+  validate :attributes_not_nil
 
   def attributes_not_nil
-    [:title, :description, :location].each do |attr|
+    [:title, :description, :tour, :location].each do |attr|
       if self[attr].nil?
         errors.add(attr, "can't be nil")
       end
