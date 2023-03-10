@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Tour, type: :model do
-
   describe 'name' do
     context 'when name is present' do
       it 'should be valid' do

@@ -7,6 +7,7 @@ class Stage < ApplicationRecord
   validates :title, presence: true, length: { minimum: 5, maximum: 30 }, format: { with: /\A[a-zA-Z]+\z/, message: "only allows letters" }
   validates :description, presence: true, length: { minimum: 150, maximum: 2000 }
   validate :attributes_not_nil
+  validates :location, presence: true
 
   def attributes_not_nil
     [:title, :description, :tour, :location].each do |attr|
