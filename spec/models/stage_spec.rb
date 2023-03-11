@@ -1,6 +1,6 @@
 RSpec.describe Stage, type: :model do
-  let(:stage) { build(:stage, user: user, tour: tour) }
-
+    let(:user) { create(:user) }
+    let(:tour) { create(:tour) }
     
     describe 'Checking Relations between Users and Tours' do
       it { should belong_to(:user) }
