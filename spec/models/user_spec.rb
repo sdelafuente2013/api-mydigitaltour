@@ -149,3 +149,6 @@ RSpec.describe User, type: :model do
     end
   end
 end
+
+# validacion de asociacion
+# (deberiamos testear que un usuario tiene puede tener muchos tours)

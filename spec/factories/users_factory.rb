@@ -7,7 +7,7 @@ FactoryBot.define do
     name { Faker::Name.name }
     lastname { Faker::Name.last_name }
     email { Faker::Internet.email }
-    role { %w[admin user guide].sample }
+    role { %w[user guia admin].sample }
     status { [true, false].sample }
 
     factory :user_with_blank do
@@ -29,7 +29,22 @@ FactoryBot.define do
     factory :user_invalid_mail do
       email { 'ejemplosin-nada' }
     end
+
+    factory :user_with_tours do
+      name { 'ejemplo' }
+      lastname { Faker::Name.last_name }
+      email { Faker::Internet.email }
+      role { %w[user guia admin].sample }
+      status { true }
+      password {  'ejemplosin123' }
+
+      transient do
+        tours_count { 2 }
+      end
+
+      after(:create) do |user, evaluator|
+        create_list(:tour_with_stages, evaluator.tours_count, user: user)
+      end
+    end
   end
-
-
 end
