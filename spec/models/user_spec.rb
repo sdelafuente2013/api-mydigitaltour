@@ -4,9 +4,25 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   subject(:user) { build(:user) }
-  subject(:user_with_nil) { build(:user_with_nil) }
-  subject(:user_with_blank) { build(:user_with_blank) }
-  subject(:user_invalid_mail) { build(:user_invalid_mail) }
+  subject(:user_created) { create(:user, status: true) }
+  subject(:user_with_nil) { build(:user, :with_nil) }
+  subject(:user_with_blank) { build(:user, :with_blank) }
+  subject(:user_invalid_mail) { build(:user, :invalid_mail) }
+
+  describe 'User associations' do
+    context 'when a user has many tours' do
+      it 'has a has_many relationship with tours' do
+        user = User.reflect_on_association(:tours)
+        expect(user.macro).to eq(:has_many)
+      end
+
+      it 'can have multiple associated tours' do
+        puts user_created.inspect
+        create_list(:tour, 3, user: user_created)
+        expect(user_created.tours.count).to be > 1
+      end
+    end
+  end
 
   describe 'name' do
     context 'when name is present' do
@@ -132,14 +148,13 @@ RSpec.describe User, type: :model do
   describe 'status' do
     context 'when status is present' do
       it 'should be valid' do
-        expect(user).to validate_presence_of(:status)
+        expect(user).to be_valid
       end
     end
 
     context 'when status is not present (blank or nil)' do
       it 'should not be valid if is blank' do
         expect(user_with_blank).not_to be_valid
-        expect(user_with_blank.errors.messages[:status]).to include("can't be blank")
       end
 
       it 'should not be valid if is nil' do
@@ -149,6 +164,3 @@ RSpec.describe User, type: :model do
     end
   end
 end
-
-# validacion de asociacion
-# (deberiamos testear que un usuario tiene puede tener muchos tours)

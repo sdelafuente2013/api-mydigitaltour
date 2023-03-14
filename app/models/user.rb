@@ -6,11 +6,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  validates :name, :lastname, :role, :status, presence: true
+  validates :name, :lastname, :role, presence: true
   validates :name, :lastname, format: { with: /\A[a-zA-Z\s]+\z/, message: 'only allows letters' }
   validates_length_of :name, :lastname, in: 3..20
   validate :attributes_not_nil
   validates :role, inclusion: { in: %w[user guia admin] }
+  validates :status, inclusion: [true, false]
 
   has_many :tours
 
