@@ -3,5 +3,10 @@
 Rails.application.routes.draw do
   devise_for :users, defaults: { format: :json }
 
-  get '/health', to: 'health#show'
+  namespace :api do
+    namespace :v1 do
+      get '/health', to: 'health#show'
+    end
+  end
+
 end
