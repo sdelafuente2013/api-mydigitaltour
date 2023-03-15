@@ -3,11 +3,27 @@
 require 'rails_helper'
 
 RSpec.describe Stage, type: :model do
-    # subject(:user) { build(:user) }
     subject(:stage) { build(:stage) }
     subject(:stage_with_blank) { build(:stage, :with_blank) }
     subject(:stage_with_nil) { build(:stage, :with_nil) }
     subject(:stage_without_tour) { build(:stage, tour_id: nil) }
+
+    describe 'Stage associations and behavior' do
+      describe 'Tour association' do
+        it 'belongs to a tour' do
+          stage_association = Stage.reflect_on_association(:tour)
+          expect(stage_association.macro).to eq(:belongs_to)
+        end
+
+        it 'associates a stage with a tour' do
+          user = create(:user)
+          tour = create(:tour, user: user)
+          stage = create(:stage, tour: tour)
+
+          expect(stage.tour).to eq(tour)
+        end
+      end
+    end
 
     describe 'title' do
         context 'when title is present' do

@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  has_many :tours, dependent: :destroy
+
   validates :name, :lastname, :role, presence: true
   validates :name, :lastname, format: { with: /\A[a-zA-Z\s]+\z/, message: 'only allows letters' }
   validates_length_of :name, :lastname, in: 3..20
@@ -13,7 +15,6 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: %w[user guia admin] }
   validates :status, inclusion: [true, false]
 
-  has_many :tours, dependent: :destroy
 
   def attributes_not_nil
     [:name, :role, :status, :email, :lastname].each do |attr|
