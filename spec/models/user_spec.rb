@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   subject(:user_with_blank) { build(:user, :with_blank) }
   subject(:user_invalid_mail) { build(:user, :invalid_mail) }
 
-  describe 'User associations' do
+  describe 'Tours associations' do
     context 'when a user has many tours' do
       it 'has a has_many relationship with tours' do
         user = User.reflect_on_association(:tours)
@@ -17,9 +17,17 @@ RSpec.describe User, type: :model do
       end
 
       it 'can have multiple associated tours' do
-        puts user_created.inspect
         create_list(:tour, 3, user: user_created)
         expect(user_created.tours.count).to be > 1
+      end
+
+      it 'deletes associated tours when the user is deleted' do
+        user = create(:user, status: true)
+        tour = create(:tour, user: user)
+
+        user.destroy
+
+        expect { Tour.find(tour.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

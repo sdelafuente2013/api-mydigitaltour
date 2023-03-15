@@ -10,7 +10,7 @@ class Stage < ApplicationRecord
   validate :attributes_not_nil
 
   def attributes_not_nil
-    [:title, :description, :tour, :location].each do |attr|
+    [:title, :description, :tour_id, :location].each do |attr|
       if self[attr].nil?
         errors.add(attr, "can't be nil")
       end

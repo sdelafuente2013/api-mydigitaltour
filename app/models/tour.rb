@@ -2,12 +2,11 @@
 
 class Tour < ApplicationRecord
   belongs_to :user
-  has_many :stages
+  has_many :stages, dependent: :destroy
 
   validates :title, :country, :city, :price, presence: true
   validates :title, :country, :city, format: { with: /\A[a-zA-Z\s]+\z/, message: 'only allows letters' }
   validates_length_of :title, :country, :city, in: 3..20
-  # validates_length_of :price, within: 1..4
   validate :attributes_not_nil
 
   def attributes_not_nil

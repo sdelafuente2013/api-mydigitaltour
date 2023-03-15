@@ -7,13 +7,13 @@ FactoryBot.define do
     location { 1 }
     tour
 
-    factory :stage_with_blank do
+    trait :with_blank do
       title { '' }
       description { '' }
       location { '' }
     end
 
-    factory :stage_with_nil do
+    trait :with_nil do
       title { nil }
       description { nil }
       location { nil }

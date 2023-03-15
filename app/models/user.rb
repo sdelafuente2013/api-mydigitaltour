@@ -13,7 +13,7 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: %w[user guia admin] }
   validates :status, inclusion: [true, false]
 
-  has_many :tours
+  has_many :tours, dependent: :destroy
 
   def attributes_not_nil
     [:name, :role, :status, :email, :lastname].each do |attr|

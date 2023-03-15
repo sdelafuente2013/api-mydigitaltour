@@ -2,8 +2,46 @@ require 'rails_helper'
 
 RSpec.describe Tour, type: :model do
   subject(:tour) { build(:tour) }
-  subject(:tour_with_nil) { build(:tour_with_nil) }
-  subject(:tour_with_blank) { build(:tour_with_blank) }
+  subject(:tour_with_nil) { build(:tour, :with_nil) }
+  subject(:tour_with_blank) { build(:tour, :with_blank) }
+
+  describe 'Tour associations and behavior' do
+    describe 'User association' do
+      it 'associates a tour with a user' do
+        user = create(:user)
+        tour = create(:tour, user: user)
+
+        expect(tour.user).to eq(user)
+      end
+    end
+
+    describe 'Stages associations and behavior' do
+      context 'when a tour has many stages' do
+        it 'establishes a has_many relationship with stages' do
+          tour = Tour.reflect_on_association(:stages)
+          expect(tour.macro).to eq(:has_many)
+        end
+
+        it 'can have multiple stages associated with it' do
+          user = create(:user)
+          tour = create(:tour, user: user)
+          create_list(:stage, 3, tour: tour)
+
+          expect(tour.stages.count).to be > 1
+        end
+
+        it 'deletes all associated stages when the tour is deleted' do
+          user = create(:user)
+          tour = create(:tour, user: user)
+          stage = create(:stage, tour: tour)
+
+          tour.destroy
+
+          expect { Stage.find(stage.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+  end
 
   describe 'title' do
     context 'when title is present' do
@@ -99,10 +137,6 @@ RSpec.describe Tour, type: :model do
       it 'should be valid' do
         expect(tour).to validate_presence_of(:price)
       end
-
-      # it 'should has a length between 1 and 4 characters' do
-      #   expect(tour).to validate_length_of(:price).is_at_least(1).is_at_most(4)
-      # end
     end
 
     context 'when name is not present (blank or nil)' do
@@ -117,7 +151,4 @@ RSpec.describe Tour, type: :model do
       end
     end
   end
-
-##faltan validaciones de actividad y user que tienen que ver con las relaiones
-
 end

@@ -47,6 +47,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 2.23'
+  gem 'byebug', '~> 9.0', '>= 9.0.6'
 end
 
 gem 'simplecov', require: false, group: :test
