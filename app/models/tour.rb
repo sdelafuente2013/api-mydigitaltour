@@ -16,5 +16,4 @@ class Tour < ApplicationRecord
       end
     end
   end
-
 end
