@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       delete 'tours/:id', to: 'tours#destroy'
       patch 'tours/:id', to: 'tours#update'
       post 'tours', to: 'tours#create'
+      #user
+      get 'user/current', to: 'user#current'
     end
   end
 end
