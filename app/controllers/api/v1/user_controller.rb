@@ -5,10 +5,11 @@ class Api::V1::UserController < ApplicationController
 
 
     def current
-         @currentUser = current_user
+      
+        @currentUser = current_user
         p user_signed_in?
-         p current_user
+        p current_user
         p @currentUser
-         render json: { show:  @currentUser }
+        render json: { show:  @currentUser }
+      end
     end
-end

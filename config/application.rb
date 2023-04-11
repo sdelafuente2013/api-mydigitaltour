@@ -46,6 +46,9 @@ module Mydigitaltour
       g.factory_bot suffix: 'factory'
     end
 
-    config.api_only = true
+    config.skip_session_storage = [:http_auth, :token_auth]
+
   end
+
+
 end

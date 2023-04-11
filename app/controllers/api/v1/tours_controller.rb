@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ToursController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy,]
 
   # 2) Pero para crear, actualizar y eliminar si necesitamos autorizacion
   # 3) Solo los usuarios con role 'guia' y 'admin' pueden crear, actualizar y eliminar
