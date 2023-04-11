@@ -1,0 +1,29 @@
+openapi: "3.0.1"
+info:
+  title: "API V1"
+  version: "v1"
+  description: "This is a sample API description"
+basePath: "/"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /api/v1/health:
+    get:
+      summary: "Obtener el estado del servidor"
+      tags:
+        - "Health"
+      responses:
+        "200":
+          description: "Estado del servidor OK"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+components:
+  schemas: {}
+  securitySchemes: {}

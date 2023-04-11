@@ -1,6 +1,9 @@
 # frozen_string_literal: true
+require 'rswag/ui'
 
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
 
   # /api/v1/health
   namespace :api do
