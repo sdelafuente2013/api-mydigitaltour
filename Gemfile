@@ -39,6 +39,8 @@ gem 'bootsnap', require: false
 gem 'rack-cors'
 gem 'devise', '~> 4.8', '>= 4.8.1'
 gem 'devise-jwt'
+gem 'jsonapi-serializer'
+
 
 gem 'rswag-api'
 gem 'rswag-ui'
